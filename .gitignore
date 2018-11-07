@@ -1,0 +1,13 @@
+.DS_Store
+sitemap.xml
+
+/.idea/*
+/*.iml
+/*.ipr
+/*.iws
+
+/build/*
+/.gradle/*
+gradlew
+gradlew.bat
+gradle
