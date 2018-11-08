@@ -7,6 +7,7 @@ sitemap.xml
 /*.iws
 
 /build/*
+/out/*
 /.gradle/*
 gradlew
 gradlew.bat
