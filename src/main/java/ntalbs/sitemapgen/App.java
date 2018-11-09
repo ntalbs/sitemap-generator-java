@@ -14,6 +14,12 @@ public class App {
 
   public static void main(String[] args) throws IOException, InterruptedException {
     Options options = new Options()
+      .addOption(Option.builder("a")
+        .longOpt("async")
+        .hasArg(false)
+        .required(false)
+        .desc("execute asynchronously")
+        .build())
       .addOption(Option.builder("s")
         .longOpt("site")
         .hasArg()
@@ -29,17 +35,26 @@ public class App {
       );
 
     try {
+      long t0 = System.currentTimeMillis();
+
       CommandLineParser parser = new DefaultParser();
       CommandLine cmd = parser.parse(options, args);
 
       String site = cmd.getOptionValue("s");
       String[] excludePaths = cmd.getOptionValues("x");
 
-      PathsCollectorSync pathsCollector = new PathsCollectorSync(site);
-      Set<String> paths = pathsCollector.collectPaths();
+      PathsCollector pathsCollector;
+      if (cmd.hasOption("a")) {
+        pathsCollector = new PathsCollectorAsync(site);
+      } else {
+        pathsCollector = new PathsCollectorSync(site);
+      }
 
+      Set<String> paths = pathsCollector.collectPaths();
       SiteMapXml siteMapXml = new SiteMapXml(site, excludePaths);
       siteMapXml.generate(paths);
+
+      System.out.printf("\nSitemap.xml has created. Took %d ms\n\n", System.currentTimeMillis() - t0);
     } catch (ParseException e) {
       HelpFormatter formatter = new HelpFormatter();
       formatter.printHelp("sitemap-gen", options);
