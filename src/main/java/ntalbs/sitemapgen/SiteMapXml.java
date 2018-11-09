@@ -4,8 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Instant;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public class SiteMapXml {
+class SiteMapXml {
 
   private static String front = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
   private static String urlFmt = "  <url>\n"
@@ -17,25 +20,35 @@ public class SiteMapXml {
   private static String back  = "</urlset>";
 
   private String baseUrl;
+  private String[] excludePaths;
+  private Predicate<String> exclude;
 
-  public SiteMapXml(String baseUrl) {
+  SiteMapXml(String baseUrl, String[] excludePaths) {
     this.baseUrl = baseUrl;
+    this.excludePaths = excludePaths;
+    this.exclude = createExcludePredicate(excludePaths);
+  }
+
+  private Predicate<String> createExcludePredicate(String[] excludePaths) {
+    if (excludePaths == null) {
+      return (path) -> false;
+    } else {
+      return (path) -> Stream.of(excludePaths).anyMatch(path::contains);
+    }
   }
 
   private String dateString() {
     return Instant.now().toString();
   }
 
-  public void generate(Iterable<String> paths) {
+  void generate(Iterable<String> paths) throws IOException {
     String date = dateString();
     try (PrintWriter w = new PrintWriter(new FileWriter("./sitemap.xml"))) {
       w.println(front);
-      for (String path : paths) {
-        w.printf(urlFmt, baseUrl, path, date);
-      }
+      StreamSupport.stream(paths.spliterator(), false)
+        .filter(exclude)
+        .forEach(path -> w.printf(urlFmt, baseUrl, path, date));
       w.println(back);
-    } catch (IOException e) {
-      // do nothing
     }
   }
 
