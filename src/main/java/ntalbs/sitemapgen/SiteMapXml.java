@@ -31,7 +31,7 @@ class SiteMapXml {
 
   private Predicate<String> createExcludePredicate(String[] excludePaths) {
     if (excludePaths == null) {
-      return (path) -> false;
+      return (path) -> true;
     } else {
       return (path) -> Stream.of(excludePaths).anyMatch(path::contains);
     }
