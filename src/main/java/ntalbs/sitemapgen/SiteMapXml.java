@@ -46,7 +46,7 @@ class SiteMapXml {
     try (PrintWriter w = new PrintWriter(new FileWriter("./sitemap.xml"))) {
       w.println(front);
       StreamSupport.stream(paths.spliterator(), false)
-        .filter(exclude)
+        .filter(Predicate.not(exclude))
         .forEach(path -> w.printf(urlFmt, baseUrl, path, date));
       w.println(back);
     }
