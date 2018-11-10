@@ -13,10 +13,10 @@ public class PathsCollectorAsync extends PathsCollector {
     super(baseUrl);
   }
 
-  private Set<String> collectAllPaths(Set<String> pathsToVisit, Set<String> visited) {
-    pathsToVisit.removeAll(visited);
+  private Set<String> collectAllPaths(Set<String> pathsToVisit, Set<String> pathsVisited) {
+    pathsToVisit.removeAll(pathsVisited);
     if (pathsToVisit.isEmpty()) {
-      return visited;
+      return pathsVisited;
     }
 
     List<CompletableFuture<Set<String>>> pathSetFuture = pathsToVisit.stream()
@@ -28,8 +28,8 @@ public class PathsCollectorAsync extends PathsCollector {
       .map(CompletableFuture::join)
       .collect(HashSet::new, Set::addAll, Set::addAll);
 
-    visited.addAll(pathsToVisit);
-    return collectAllPaths(pathsToVisitInNextRound, visited);
+    pathsVisited.addAll(pathsToVisit);
+    return collectAllPaths(pathsToVisitInNextRound, pathsVisited);
   }
 
   public Set<String> collectPaths() {
