@@ -12,27 +12,8 @@ import org.apache.commons.cli.ParseException;
 
 public class App {
 
-  public static void main(String[] args) throws IOException, InterruptedException {
-    Options options = new Options()
-      .addOption(Option.builder("a")
-        .longOpt("async")
-        .hasArg(false)
-        .required(false)
-        .desc("execute asynchronously")
-        .build())
-      .addOption(Option.builder("s")
-        .longOpt("site")
-        .hasArg()
-        .required()
-        .desc("site Url to create sitemap.xml.")
-        .build())
-      .addOption(Option.builder("x")
-        .longOpt("exclude")
-        .hasArg()
-        .required(false)
-        .desc("paths to ignore.")
-        .build()
-      );
+  public static void main(String[] args) throws IOException {
+    Options options = buildOptions();
 
     try {
       long t0 = System.currentTimeMillis();
@@ -54,12 +35,37 @@ public class App {
       SiteMapXml siteMapXml = new SiteMapXml(site, excludePaths);
       siteMapXml.generate(paths);
 
-      System.out.printf("\nSitemap.xml has created. Took %d ms\n\n", System.currentTimeMillis() - t0);
+      System.out.printf(
+        "\nSitemap.xml has created. Took %d ms\n\n",
+        System.currentTimeMillis() - t0
+      );
     } catch (ParseException e) {
       HelpFormatter formatter = new HelpFormatter();
       formatter.printHelp("sitemap-gen", options);
       System.exit(0);
     }
+  }
+
+  private static Options buildOptions() {
+    return new Options()
+      .addOption(Option.builder("a")
+        .longOpt("async")
+        .hasArg(false)
+        .required(false)
+        .desc("execute asynchronously")
+        .build())
+      .addOption(Option.builder("s")
+        .longOpt("site")
+        .hasArg()
+        .required()
+        .desc("site Url to create sitemap.xml.")
+        .build())
+      .addOption(Option.builder("x")
+        .longOpt("exclude")
+        .hasArg()
+        .required(false)
+        .desc("paths to ignore.")
+        .build());
   }
 
 }
