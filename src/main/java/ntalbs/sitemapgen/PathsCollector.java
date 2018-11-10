@@ -25,28 +25,31 @@ public abstract class PathsCollector {
     this.baseUrl = baseUrl;
   }
 
-  private String loadPage(String url) throws IOException, InterruptedException {
-    HttpRequest request = HttpRequest.newBuilder(URI.create(url))
+  private HttpRequest newHttpRequest(String path) {
+    return HttpRequest.newBuilder(URI.create(baseUrl + path))
       .GET()
       .build();
-    return HttpClient.newHttpClient()
-      .send(request, BodyHandlers.ofString())
-      .body();
   }
 
-  Set<String> getPathsIn(String path) throws IOException, InterruptedException {
-    String html = loadPage(baseUrl + path);
+  Set<String> getPathsIn(String path) {
+    HttpRequest request = newHttpRequest(path);
 
-    return Jsoup.parse(html).getElementsByTag("a").eachAttr("href").stream()
-      .filter(isInternal)
-      .map(toPath)
-      .collect(Collectors.toSet());
+    try {
+      String html = HttpClient.newHttpClient()
+        .send(request, BodyHandlers.ofString())
+        .body();
+      return Jsoup.parse(html).getElementsByTag("a").eachAttr("href").stream()
+        .filter(isInternal)
+        .map(toPath)
+        .collect(Collectors.toSet());
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   CompletableFuture<Set<String>> getPathsInAsync(String path) {
-    HttpRequest request = HttpRequest.newBuilder(URI.create(baseUrl + path))
-      .GET()
-      .build();
+    HttpRequest request = newHttpRequest(path);
+
     return HttpClient.newHttpClient()
       .sendAsync(request, BodyHandlers.ofString())
       .thenApply(response -> Jsoup.parse(response.body())
@@ -57,6 +60,6 @@ public abstract class PathsCollector {
       );
   }
 
-  public abstract Set<String> collectPaths() throws IOException, InterruptedException;
+  public abstract Set<String> collectPaths();
 
 }
