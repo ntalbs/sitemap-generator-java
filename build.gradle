@@ -15,6 +15,14 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
 }
 
+compileJava {
+    options.compilerArgs += '-proc:none'
+}
+
+compileTestJava {
+    options.compilerArgs += '-proc:none'
+}
+
 repositories {
     jcenter()
 }
