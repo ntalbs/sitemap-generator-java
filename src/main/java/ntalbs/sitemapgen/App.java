@@ -36,7 +36,7 @@ public class App {
       siteMapXml.generate(paths);
 
       System.out.printf(
-        "\nSitemap.xml has created. Took %d ms\n\n",
+        "\nSitemap.xml has created. Took %d ms\n",
         System.currentTimeMillis() - t0
       );
     } catch (ParseException e) {
