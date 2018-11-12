@@ -6,8 +6,12 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PathsCollectorAsync extends PathsCollector {
+
+  private static Logger logger = LogManager.getLogger();
 
   PathsCollectorAsync(String baseUrl) {
     super(baseUrl);
@@ -20,7 +24,7 @@ public class PathsCollectorAsync extends PathsCollector {
     }
 
     List<CompletableFuture<Set<String>>> pathSetFuture = pathsToVisit.stream()
-      .peek(p -> System.out.println("visiting " + p))
+      .peek(p -> logger.info("visiting " + p))
       .map(this::getPathsInAsync)
       .collect(Collectors.toList());
 

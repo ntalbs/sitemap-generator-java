@@ -2,8 +2,12 @@ package ntalbs.sitemapgen;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PathsCollectorSync extends PathsCollector {
+
+  private static Logger logger = LogManager.getLogger();
 
   PathsCollectorSync(String baseUrl) {
     super(baseUrl);
@@ -16,7 +20,7 @@ public class PathsCollectorSync extends PathsCollector {
     }
 
     Set<String> pathsToVisitNext = pathsToVisit.stream()
-      .peek(p -> System.out.println("visiting " + p))
+      .peek(p -> logger.info("visiting " + p))
       .map(this::getPathsIn)
       .collect(HashSet::new, Set::addAll, Set::addAll);
 
