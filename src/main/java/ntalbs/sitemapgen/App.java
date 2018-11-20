@@ -1,9 +1,6 @@
 package ntalbs.sitemapgen;
 
 import java.io.IOException;
-import java.util.Set;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
@@ -13,16 +10,16 @@ import org.apache.commons.cli.ParseException;
 public class App {
 
   public static void main(String[] args) throws IOException {
-    Options options = buildOptions();
+    var options = buildOptions();
 
     try {
-      long t0 = System.currentTimeMillis();
+      var t0 = System.currentTimeMillis();
 
-      CommandLineParser parser = new DefaultParser();
-      CommandLine cmd = parser.parse(options, args);
+      var parser = new DefaultParser();
+      var cmd = parser.parse(options, args);
 
-      String site = cmd.getOptionValue("s");
-      String[] excludePaths = cmd.getOptionValues("x");
+      var site = cmd.getOptionValue("s");
+      var excludePaths = cmd.getOptionValues("x");
 
       PathsCollector pathsCollector;
       if (cmd.hasOption("a")) {
@@ -31,8 +28,8 @@ public class App {
         pathsCollector = new PathsCollectorSync(site);
       }
 
-      Set<String> paths = pathsCollector.collectPaths();
-      SiteMapXml siteMapXml = new SiteMapXml(site, excludePaths);
+      var paths = pathsCollector.collectPaths();
+      var siteMapXml = new SiteMapXml(site, excludePaths);
       siteMapXml.generate(paths);
 
       System.out.printf(

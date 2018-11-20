@@ -42,8 +42,8 @@ class SiteMapXml {
   }
 
   void generate(Iterable<String> paths) throws IOException {
-    String date = dateString();
-    try (PrintWriter w = new PrintWriter(new FileWriter("./sitemap.xml"))) {
+    var date = dateString();
+    try (var w = new PrintWriter(new FileWriter("./sitemap.xml"))) {
       w.println(front);
       StreamSupport.stream(paths.spliterator(), false)
         .filter(Predicate.not(exclude))

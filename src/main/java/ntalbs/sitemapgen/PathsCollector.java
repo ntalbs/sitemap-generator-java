@@ -32,10 +32,10 @@ public abstract class PathsCollector {
   }
 
   Set<String> getPathsIn(String path) {
-    HttpRequest request = newHttpRequest(path);
+    var request = newHttpRequest(path);
 
     try {
-      String html = HttpClient.newHttpClient()
+      var html = HttpClient.newHttpClient()
         .send(request, BodyHandlers.ofString())
         .body();
       return Jsoup.parse(html).getElementsByTag("a").eachAttr("href").stream()
@@ -48,7 +48,7 @@ public abstract class PathsCollector {
   }
 
   CompletableFuture<Set<String>> getPathsInAsync(String path) {
-    HttpRequest request = newHttpRequest(path);
+    var request = newHttpRequest(path);
 
     return HttpClient.newHttpClient()
       .sendAsync(request, BodyHandlers.ofString())
