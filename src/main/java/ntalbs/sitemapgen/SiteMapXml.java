@@ -20,12 +20,10 @@ class SiteMapXml {
   private static String back  = "</urlset>";
 
   private String baseUrl;
-  private String[] excludePaths;
   private Predicate<String> exclude;
 
   SiteMapXml(String baseUrl, String[] excludePaths) {
     this.baseUrl = baseUrl;
-    this.excludePaths = excludePaths;
     this.exclude = createExcludePredicate(excludePaths);
   }
 
