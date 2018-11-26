@@ -10,17 +10,17 @@ import java.util.stream.StreamSupport;
 
 class SiteMapXml {
 
-  private static String front = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
-  private static String urlFmt = "  <url>\n"
+  private static final String front = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
+  private static final String urlFmt = "  <url>\n"
     + "    <loc>%s%s</loc>\n"
     + "    <lastmod>%s</lastmod>\n"
     + "    <changefreq>monthly</changefreq>\n"
     + "    <priority>0.5</priority>\n"
     + "  </url>\n";
-  private static String back  = "</urlset>";
+  private static final String back  = "</urlset>";
 
-  private String baseUrl;
-  private Predicate<String> exclude;
+  private final String baseUrl;
+  private final Predicate<String> exclude;
 
   SiteMapXml(String baseUrl, String[] excludePaths) {
     this.baseUrl = baseUrl;

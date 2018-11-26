@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 public class PathsCollectorSync extends PathsCollector {
 
-  private static Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogManager.getLogger();
 
   PathsCollectorSync(String baseUrl) {
     super(baseUrl);
