@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +38,6 @@ public class PathsCollectorAsync extends PathsCollector {
   public Set<String> collectPaths() {
     Set<String> root = new HashSet<>();
     root.add("/");
-    return collectAllPaths(root, ConcurrentHashMap.newKeySet());
+    return collectAllPaths(root, new HashSet<>());
   }
 }
