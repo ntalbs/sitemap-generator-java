@@ -55,13 +55,13 @@ public class App {
         .longOpt("site")
         .hasArg()
         .required()
-        .desc("site Url to create sitemap.xml.")
+        .desc("site Url to create sitemap.xml")
         .build())
       .addOption(Option.builder("x")
         .longOpt("exclude")
         .hasArg()
         .required(false)
-        .desc("paths to ignore.")
+        .desc("paths to ignore")
         .build());
   }
 
