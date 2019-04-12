@@ -35,6 +35,7 @@ public class PathsCollectorAsync extends PathsCollector {
     return collectAllPaths(pathsToVisitInNextRound, pathsVisited);
   }
 
+  @Override
   public Set<String> collectPaths() {
     Set<String> root = new HashSet<>();
     root.add("/");

@@ -28,6 +28,7 @@ public class PathsCollectorSync extends PathsCollector {
     return collectAllPaths(pathsToVisitNext, pathsVisited);
   }
 
+  @Override
   public Set<String> collectPaths() {
     Set<String> root = new HashSet<>();
     root.add("/");
